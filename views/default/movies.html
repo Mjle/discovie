@@ -1,0 +1,60 @@
+{{extend 'layout.html'}}
+
+{{block head}}
+<script src="{{=URL('static', 'js/vue.js')}}"></script>
+<script>
+    var movies_url = "{{=URL('default', 'get_movies')}}";
+</script>
+{{end}}
+
+<div class="btn">
+    <form action="http://discovie.pythonanywhere.com/">
+        <input type="submit" value="Back to Home"/>
+    </form>
+</div>
+
+<body>
+<div id="vue-div">
+    <div class="container-list">
+        <div class="container">
+            <div class="row">
+                <h2>Movie Search Box</h2>
+                <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input v-on:keyup.enter="do_search" class="  search-query form-control"
+                               placeholder="Movie Search" v-model="movie_search"/>
+                        <span class="input-group-btn">
+                            <button class="btn btn-danger" v-on:click="do_search" type="button">
+                                <span class=" glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div v-for="movie in movie_list" class="container-list">
+        <div class="row">
+            <div class="container col-xs-10">
+                <div style="display:inline-block">
+                    <img v-bind:src="movie[6]" style="max-width:17%;height:auto;float:left"/>
+                    <div class="movies-text-inline" style="padding-left: 300px">
+                        <h3> ${movie[0]} <span>(${movie[5]})</span></h3>
+                        <p>Director ${movie[1]}</p>
+                        <p>IMDB Rating: ${movie[2]}</p>
+                        <p>Genres ${movie[3]}</p>
+                        <p>${movie[4]}</p>
+                        <a class="btn btn-secondary" v-bind:href="movie[7]" role="button">IMDB Link</a>
+                    </div>
+                </div>
+                <!--/span-->
+
+            </div>
+        </div><!--/row-->
+    </div><!--/span-->
+</div>
+{{pass}}
+</body>
+</html>
+
+<script src="{{=URL('static', 'js/default_index.js')}}"></script>

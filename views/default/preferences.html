@@ -1,0 +1,65 @@
+{{extend 'layout.html'}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="{{=URL('static', 'js/vue.js')}}"></script>
+    <script>
+        var get_info_url = "{{=URL('rating', 'get_info')}}";
+        var vote_url = "{{= URL('rating', 'vote', user_signature=True) if auth.user_id else ''}}";
+        var is_logged_in = {{='true' if auth.user_id else 'false'}};
+    </script>
+</head>
+
+<div class="main_content">
+    <div class="user-preference-top">
+        <!-- Login -->
+        <div class="user-pref-login">
+            <a href="{{=URL('default', 'index')}}" class="btn btn-success">
+                <i class="fa fa-map-pin" aria-hidden="true"></i> Home</a>
+        {{if auth.user_id:}}
+            <a href="{{=URL('default', 'user', args=['logout'])}}" class="btn btn-danger">
+                <i class="fa fa-times" aria-hidden="true"></i> Logout</a>
+        {{else:}}
+            <a href="{{=URL('default', 'user', args=['login'])}}" class="btn btn-warning">
+                <i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+        {{pass}}
+        </div>
+    </div>
+    <h1 class="main_title text-center" style="color: white; padding-left: 150px">User Preferences</h1>
+    <p class="explanation text-center" style="color: white">This page will help you create a movie preference!</p>
+</div>
+
+<!-- Posters -->
+
+<!-- His code -->
+<div class="main_content">
+    <div id="vue-div" class="display:none" style="padding-left: 30px">
+        <div v-for="movie in movie_list" class="container-list" style="display:inline-block; margin:10px;">
+            <div class="row">
+                <div class="container col-xs-10">
+                    <img v-bind:src="movie.url" style="height:500px"/>
+                    <h5 align="center">${movie.title}</h5>
+                    <div v-if="is_logged_in" align="center">
+                <span v-on:mouseout="mouse_out(movie._idx)">
+                    <span v-on:mouseover="mouse_over(movie._idx, idx)"
+                          v-on:click="set_stars(movie._idx, idx)"
+                          v-for="idx in star_indices">
+                        <i v-if="idx <= movie.num_stars_display" class="fa fa-star fa-lg"></i>
+                        <i v-if="idx > movie.num_stars_display" class="fa fa-star-o fa-lg"></i>
+                        <i v-if="movie._pending" class="fa fa-spinner fa-spin"></i>
+                    </span><br></br>
+                    <button class="btn blue" v-on:click="bookmark()"><i class="fa fa-bookmark"></i> Bookmark</button>
+                    <button class="btn blue" v-on:click="hide()"><i class="fa fa-eye-slash"></i> Watched</button>
+
+                </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/>
+
+<script src="{{=URL('static', 'js/default_pref.js')}}"></script>
