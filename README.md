@@ -1,7 +1,7 @@
 # Discovie
 
 ### Synopsis
-This project was made for our web application class cmps 183. 
+This project was made for our web application class cmps 183. We developed in a fullstack web2py python framework along with our teacher's selected single page application JS: vueJS.
 
 ### Installation
 
